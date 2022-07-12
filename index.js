@@ -6,7 +6,7 @@ async function getCoords(){
 }
 
 // map object
-const myMap = {
+const pageMap = {
 	coordinates: [],
 	businesses: [],
 	map: {},
@@ -45,7 +45,6 @@ const myMap = {
 	},
 }
 
-// get coordinates via geolocation api
  
 
 // get foursquare businesses
@@ -58,8 +57,8 @@ async function getFoursquare(business) {
 		}
 	}
 	let limit = 5
-	let lat = myMap.coordinates[0]
-	let lon = myMap.coordinates[1]
+	let lat = pageMap.coordinates[0]
+	let lon = pageMap.coordinates[1]
 	let response = await fetch(`https://api.foursquare.com/v3/places/search?&query=${business}&limit=${limit}&ll=${lat}%2C${lon}`, options)
 	let data = await response.text()
 	let parsedData = JSON.parse(data)
@@ -84,8 +83,8 @@ function processBusinesses(data) {
 // window load
 window.onload = async () => {
 	const coords = await getCoords()
-	myMap.coordinates = coords
-	myMap.buildMap()
+	pageMap.coordinates = coords
+	pageMap.buildMap()
 }
 
 // business submit button
@@ -93,6 +92,6 @@ document.getElementById('submit').addEventListener('click', async (event) => {
 	event.preventDefault()
 	let business = document.getElementById('business').value
 	let data = await getFoursquare(business)
-	myMap.businesses = processBusinesses(data)
-	myMap.addMarkers()
+	pageMap.businesses = processBusinesses(data)
+	pageMap.addMarkers()
 })
